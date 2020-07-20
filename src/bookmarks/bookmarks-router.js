@@ -13,25 +13,13 @@ bookmarksRouter
   })
   .post(bodyParser, (req, res) => {
     const {title, url, description = "", rating} = req.body
-    if (!title) {
-        logger.error(`Title is required`)
+    for (let field of ['title', 'url', 'rating']) {
+      if (!req.body[field]){
+        logger.error(`'${field}' is required`)
         return res
         .status(400)
-        .send('Title is required')
-    }
-    
-    if (!url) {
-        logger.error(`Url is required`)
-        return res
-        .status(400)
-        .send('Url is required')
-    }
-    
-    if (!rating){
-        logger.error(`Rating is required`)
-        return res
-        .status(400)
-        .send('Rating is required')
+        .send(`'${field}' is required`)
+      }
     }
 
     if (!validUrl.isWebUri(url)) {
@@ -78,7 +66,7 @@ bookmarksRouter
         .send('Bookmark Not Found')
     }
   
-    res.json(card)
+    res.json(bookmark)
   })
   .delete((req, res) => {
     const { id } = req.params
