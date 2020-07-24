@@ -1,10 +1,10 @@
-const ArticlesService = {
-    getAllArticles(knex) {
+const BookmarksService = {
+    getAllBookmarks(knex) {
       return knex.select('*').from('bookmarks')
     },
-    insertArticle(knex, newArticle) {
+    insertBookmark(knex, newBookmark) {
       return knex
-        .insert(newArticle)
+        .insert(newBookmark)
         .into('bookmarks')
         .returning('*')
         .then(rows => {
@@ -14,16 +14,16 @@ const ArticlesService = {
     getById(knex, id) {
       return knex.from('bookmarks').select('*').where('id', id).first()
     },
-    deleteArticle(knex, id) {
+    deleteBookmark(knex, id) {
       return knex('bookmarks')
         .where({ id })
         .delete()
     },
-    updateArticle(knex, id, newArticleFields) {
+    updateBookmark(knex, id, newBookmarkFields) {
       return knex('bookmarks')
         .where({ id })
-        .update(newArticleFields)
+        .update(newBookmarkFields)
     },
   }
   
-  module.exports = ArticlesService
+  module.exports = BookmarksService

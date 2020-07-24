@@ -1,24 +1,23 @@
 const express = require('express')
-const ArticlesService = require('../books-service')
+const BookmarksService = require('../books-service')
 const bookmarksRouter = express.Router()
 
 bookmarksRouter
   .route('/bookmarks')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    ArticlesService.getAllArticles(knexInstance)
-        .then(articles => {
-            res.json(articles)
+    BookmarksService.getAllBookmarks(knexInstance)
+        .then(Bookmarks => {
+            res.json(Bookmarks)
         })
         .catch(next)
-    // res.json(bookmarks)
   })
 
 bookmarksRouter
   .route('/bookmarks/:id')
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    ArticlesService.getById(knexInstance, req.params.id)
+    BookmarksService.getById(knexInstance, req.params.id)
       .then(book => {
           if (!book) {
               return res.status(404).json({
