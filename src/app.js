@@ -21,30 +21,30 @@ app.use(errorHandler)
 
 // app.use(validateBearerToken)
 
-app.get('/bookmarks', (req, res, next) => {
-    const knexInstance = req.app.get('db')
-    ArticlesService.getAllArticles(knexInstance)
-        .then(articles => {
-            res.json(articles)
-        })
-        .catch(next)
-})
+// app.get('/bookmarks', (req, res, next) => {
+//     const knexInstance = req.app.get('db')
+//     ArticlesService.getAllArticles(knexInstance)
+//         .then(articles => {
+//             res.json(articles)
+//         })
+//         .catch(next)
+// })
 
-app.get('/bookmarks/:id', (req, res, next) => {
-    const knexInstance = req.app.get('db')
-    ArticlesService.getById(knexInstance, req.params.id)
-      .then(book => {
-          if (!book) {
-              return res.status(404).json({
-                  error: { message: `Bookmark doesn't exist` }
-              })
-          }
-          res.json(book)
-      })
-      .catch(next)
-})
+// app.get('/bookmarks/:id', (req, res, next) => {
+//     const knexInstance = req.app.get('db')
+//     ArticlesService.getById(knexInstance, req.params.id)
+//       .then(book => {
+//           if (!book) {
+//               return res.status(404).json({
+//                   error: { message: `Bookmark doesn't exist` }
+//               })
+//           }
+//           res.json(book)
+//       })
+//       .catch(next)
+// })
 
-// app.use(bookmarksRouter)
+app.use(bookmarksRouter)
 app.get('/', (req, res) => {
     res.send('Hello, world!')
 })
