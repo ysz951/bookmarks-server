@@ -20,10 +20,9 @@ app.use(cors())
 
 // app.use(validateBearerToken)
 app.use(bookmarksRouter)
-app.use(errorHandler)
 app.get('/', (req, res) => {
     res.send('Hello, world!')
 })
-
+app.use(errorHandler)
 
 module.exports = app
