@@ -16,11 +16,11 @@ app.use(helmet())
 app.use(express.json())
 app.use(cors())
 
-app.use(errorHandler)
+
 
 // app.use(validateBearerToken)
-
 app.use(bookmarksRouter)
+app.use(errorHandler)
 app.get('/', (req, res) => {
     res.send('Hello, world!')
 })

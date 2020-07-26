@@ -1,5 +1,5 @@
 const express = require('express')
-const BookmarksService = require('../books-service')
+const BookmarksService = require('./bookmarks-service')
 const bookmarksRouter = express.Router()
 
 bookmarksRouter
