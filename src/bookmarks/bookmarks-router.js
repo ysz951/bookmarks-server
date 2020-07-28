@@ -34,8 +34,8 @@ bookmarksRouter
     }
 
     const { title, url, description, rating } = req.body
-
-    if (!Number.isInteger(rating) || rating < 0 || rating > 5) {
+    const numRating = Number(rating)
+    if (!Number.isInteger(numRating) || numRating < 0 || numRating > 5) {
       logger.error(`Invalid rating '${rating}' supplied`)
       return res.status(400).send(`'rating' must be a number between 0 and 5`)
     }
@@ -45,7 +45,7 @@ bookmarksRouter
       return res.status(400).send(`'url' must be a valid URL`)
     }
 
-    const newBookmark = { title, url, description, rating }
+    const newBookmark = { title, url, description, rating: numRating }
 
     BookarksService.insertBookmark(
       req.app.get('db'),
@@ -98,28 +98,31 @@ bookmarksRouter
   })
   .patch(bodyParser, (req, res, next) => {
     const { title, url, description = '', rating } = req.body
-    const articleToUpdate = { title, url, description, rating }
-    const numberOfValues = Object.values(articleToUpdate).filter(Boolean).length
+    const bookmarkToUpdate = { title, url, description }
+    if (rating) bookmarkToUpdate.rating = Number(rating)
+    const numberOfValues = Object.values(bookmarkToUpdate).filter(Boolean).length
     if (numberOfValues === 0) {
         return res.status(400).json({
         error: {
-            message: `Request body must contain either 'title', 'style' or 'content'`
+            message: `Request body must contain either 'title', 'url' or 'rating'`
         }
         })
     }
-    if (!Number.isInteger(rating) || rating < 0 || rating > 5) {
+    const numRating = Number(rating)
+    if (rating && !Number.isInteger(numRating) || numRating < 0 || numRating > 5) {
       logger.error(`Invalid rating '${rating}' supplied`)
       return res.status(400).send(`'rating' must be a number between 0 and 5`)
     }
 
-    if (!isWebUri(url)) {
+    if (url && !isWebUri(url)) {
       logger.error(`Invalid url '${url}' supplied`)
       return res.status(400).send(`'url' must be a valid URL`)
     }
+
     BookarksService.updateBookmark(
         req.app.get('db'),
         req.params.bookmark_id,
-        articleToUpdate
+        bookmarkToUpdate
     )
         .then(numRowsAffected => {
             res.status(204).end()
