@@ -45,7 +45,7 @@ bookmarksRouter
       return res.status(400).send(`'url' must be a valid URL`)
     }
 
-    const newBookmark = { title, url, description, rating: numRating }
+    const newBookmark = { title, url, description, rating }
 
     BookarksService.insertBookmark(
       req.app.get('db'),
@@ -99,7 +99,7 @@ bookmarksRouter
   .patch(bodyParser, (req, res, next) => {
     const { title, url, description = '', rating } = req.body
     const bookmarkToUpdate = { title, url, description }
-    if (rating) bookmarkToUpdate.rating = Number(rating)
+    if (rating) bookmarkToUpdate.rating = rating
     const numberOfValues = Object.values(bookmarkToUpdate).filter(Boolean).length
     if (numberOfValues === 0) {
         return res.status(400).json({
