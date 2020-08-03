@@ -98,8 +98,8 @@ bookmarksRouter
   })
   .patch(bodyParser, (req, res, next) => {
     const { title, url, description = '', rating } = req.body
-    const bookmarkToUpdate = { title, url, description }
-    if (rating) bookmarkToUpdate.rating = rating
+    const bookmarkToUpdate = { title, url, description, rating }
+    // if (rating) bookmarkToUpdate.rating = rating
     const numberOfValues = Object.values(bookmarkToUpdate).filter(Boolean).length
     if (numberOfValues === 0) {
         return res.status(400).json({
